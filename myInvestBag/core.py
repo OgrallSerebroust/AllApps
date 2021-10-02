@@ -22,6 +22,9 @@ class MainWindowPart(QMainWindow):
         insert_action = QAction("Insert asset", self)
         insert_action.triggered.connect(self.show_insert_window)
         action_menu.addAction(insert_action)
+        reload_action = QAction("Reload...", self)
+        reload_action.triggered.connect(self.reload_table_data)
+        action_menu.addAction(reload_action)
         palette = QPalette()
         palette.setColor(QPalette.Window, QColor("#000000"))
         self.setPalette(palette)
@@ -36,6 +39,9 @@ class MainWindowPart(QMainWindow):
 
     def show_insert_window(self):
         self.window_program.show()
+
+    def reload_table_data(self):
+        MainWidgetPart.update_table_data(self.main_window_part)
 
 
 if __name__ == "__main__":

@@ -1,8 +1,8 @@
 from PyQt5.QtWidgets import QWidget, QFormLayout, QLabel, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout
 from PyQt5.QtGui import QPalette, QColor, QFont
 from PyQt5.QtCore import Qt
-from requests import get
-from settings import insert_document
+from requests import get, exceptions
+from settings import insert_document, documents_count
 
 
 class InsertWindow(QWidget):
@@ -46,16 +46,22 @@ class InsertWindow(QWidget):
         self.close()
 
     def insert_data_to_database(self):
+        new_document_id = documents_count() + 1
+        print(new_document_id)
         if self.asset_edit_line.text() == "ETH":
-            resp = get("https://www.rbc.ru/crypto/ajax/values/?id=320915&_=1630589855773")
-            eth_unit_price = (resp.json()["320915"]["closevalue"])
-            data = {
-                "asset": "ETH",
-                "unitPrice": self.unit_price_edit_line.text(),
-                "numberOfUnits": self.units_number_edit_line.text(),
-                "invested": self.invested_edit_line.text(),
-                "unitPriceRate": str(eth_unit_price)
-            }
-            insert_document(data)
+            try:
+                resp = get("https://www.rbc.ru/crypto/ajax/values/?id=320915&_=1630589855773")
+                eth_unit_price = (resp.json()["320915"]["closevalue"])
+                data = {
+                    "_id": new_document_id,
+                    "asset": "ETH",
+                    "unitPrice": self.unit_price_edit_line.text(),
+                    "numberOfUnits": self.units_number_edit_line.text(),
+                    "invested": self.invested_edit_line.text(),
+                    "unitPriceRate": str(eth_unit_price)
+                }
+                insert_document(data)
+            except exceptions.ConnectionError:
+                print("bad")
         self.close_window()
 
