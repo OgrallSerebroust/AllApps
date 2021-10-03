@@ -1,0 +1,23 @@
+.TableWidget, .QLineEdit
+{
+    background: #000000;
+    color: #00FF00;
+    border: 1px solid rgba(25, 255, 25, 0.43);
+}
+
+.QLabel
+{
+    color: #00FF00;
+}
+
+.QPushButton
+{
+    background: rgba(25, 255, 25, 1);
+    color: #000000;
+}
+
+.QPushButton:hover, .QPushButton:focus
+{
+    background: rgba(25, 255, 25, 0.75);
+    color: #000000;
+}
